@@ -68,7 +68,10 @@ const SignIn = ({navigation}) => {
                 <Text style={styles.text_header}>Welcome!</Text>
                 <Text style={styles.text}>sign in to view products</Text>
             </View>
-            <View style={styles.footer}>
+            <Animatable.View 
+                style={styles.footer}
+                animation="fadeInUpBig"
+            >
                 <Text style={styles.text_footer}>Username</Text>
                 <View style={styles.action}>
                     <FontAwesome 
@@ -137,10 +140,11 @@ const SignIn = ({navigation}) => {
                     >
                         <Text style={[styles.textSign, {
                             color:'#fff'
-                        }]}>Sign in</Text>
+                        }]}>Sign In</Text>
                     </LinearGradient>
+                    <Text>Sign Up</Text>
                 </View>
-            </View>
+            </Animatable.View>
         </View>
     );
 };
