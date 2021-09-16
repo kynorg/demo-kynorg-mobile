@@ -25,10 +25,48 @@ import Users from '../Admin/admin';
 // const AuthContext = React.createContext();
 
 const SignIn = ({navigation}) => {
+
+    const [data, setData] = React.useState({
+        username: '',
+        password: '',
+        check_textInputChange: '',
+        secureTextEntry: true
+    })
+
+    const textInputChange = (val) => {
+        if( val.length != 0 ) {
+            setData({
+                ...data,
+                email: val,
+                check_textInputChange: true
+            });
+        } else {
+            setData({
+                ...data,
+                email: val,
+                check_textInputChange: false
+            });
+        }
+    }
+
+    const handlePasswordChange = (val) => {
+        setData({
+            ...data,
+            password: val
+        });
+    }
+
+    const updateSecureTextEntry = ()=> {
+        setData({
+            ...data,
+            secureTextEntry: !data.secureTextEntry
+        })
+    }
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.text_header}>Welcome!</Text>
+                <Text style={styles.text}>sign in to view products</Text>
             </View>
             <View style={styles.footer}>
                 <Text style={styles.text_footer}>Username</Text>
@@ -42,32 +80,65 @@ const SignIn = ({navigation}) => {
                         placeholder="Your username"
                         style={styles.textInput}
                         autoCapitalize="none"
+                        onChangeText={(val) => textInputChange(val)}
                     />
-                    <Feather
+                    {data.check_textInputChange ?
+                    <Animatable.View
+                        animation="bounceIn"
+                    >
+                        <Feather
                         name="check-circle"
                         color="green"
-                        size={2}
+                        size={20}
                     />
+                    </Animatable.View>
+                    : null}
                 </View>
+
                 <Text style={[styles.text_footer, {
                     marginTop: 35
                 }]}>Password</Text>
                 <View style={styles.action}>
-                    <FontAwesome 
+                    <Feather
                         name="lock"
                         color="#05375a"
                         size={20}
                     /> 
                     <TextInput
                         placeholder="Password"
+                        secureTextEntry={data.secureTextEntry ? true : false}
                         style={styles.textInput}
                         autoCapitalize="none"
+                        onChangeText={(val) => handlePasswordChange(val)}
                     />
-                    <Feather
-                        name="eye-off"
-                        color="grey"
-                        size={2}
-                    />
+                    <TouchableOpacity
+                        onPress={updateSecureTextEntry}
+                    >
+                        {data.secureTextEntry ?
+                        <Feather
+                            name="eye-off"
+                            color="grey"
+                            size={20}
+                        />
+                        :
+                        <Feather
+                            name="eye"
+                            color="grey"
+                            size={20}
+                        />
+                        }
+                        
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.button}>
+                    <LinearGradient
+                        colors={['#08d4c4', '#01ab9d']}
+                        style={styles.signIn}
+                    >
+                        <Text style={[styles.textSign, {
+                            color:'#fff'
+                        }]}>Sign in</Text>
+                    </LinearGradient>
                 </View>
             </View>
         </View>
@@ -94,6 +165,10 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 30,
         paddingHorizontal: 20,
         paddingVertical: 30
+    },
+    text: {
+      color: 'black',
+      marginTop:5
     },
     text_header: {
         color: '#fff',

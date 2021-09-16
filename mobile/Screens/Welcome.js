@@ -37,7 +37,7 @@ const Welcome = ({navigation}) => {
             <Text style={[styles.title, {
                 color: colors.text
             }]}>Welcome to our store</Text>
-            <Text style={styles.text}>Sign in with account</Text>
+            {/* <Text style={styles.text}>Sign in with account</Text> */}
             <View style={styles.button}>
             <TouchableOpacity onPress={()=>navigation.navigate('SignIn')}>
                 <LinearGradient
