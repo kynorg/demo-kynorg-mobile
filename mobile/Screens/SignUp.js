@@ -24,13 +24,16 @@ import Users from '../Admin/admin';
 
 // const AuthContext = React.createContext();
 
-const SignIn = ({navigation}) => {
+const SignUp = ({navigation}) => {
 
     const [data, setData] = React.useState({
         username: '',
         password: '',
+        confirm_password: '',
         check_textInputChange: '',
-        secureTextEntry: true
+        secureTextEntry: true,
+        confirm_secureTextEntry: true
+
     })
 
     const textInputChange = (val) => {
@@ -56,18 +59,32 @@ const SignIn = ({navigation}) => {
         });
     }
 
+    const handleConfirmPasswordChange = (val) => {
+        setData({
+            ...data,
+            confirm_password: val
+        });
+    }
+
     const updateSecureTextEntry = ()=> {
         setData({
             ...data,
             secureTextEntry: !data.secureTextEntry
         })
     }
+
+    const updateconfirmSecureTextEntry = ()=> {
+        setData({
+            ...data,
+            confirm_secureTextEntry: !data.confirm_secureTextEntry
+        })
+    }
     return (
         <View style={styles.container}>
-            <StatusBar backgroundColor='#009387' barStyle="light-content"/>
+            {/* <StatusBar backgroundColor='#009387' barStyle="light-content"/> */}
             <View style={styles.header}>
-                <Text style={styles.text_header}>Welcome!</Text>
-                <Text style={styles.text}>sign in to view products</Text>
+                <Text style={styles.text_header}>Register Now!</Text>
+                <Text style={styles.text}>sign up to view products</Text>
             </View>
             <Animatable.View 
                 style={styles.footer}
@@ -134,6 +151,41 @@ const SignIn = ({navigation}) => {
                         
                     </TouchableOpacity>
                 </View>
+
+                <Text style={[styles.text_footer, {
+                    marginTop: 35
+                }]}>Confirm Password</Text>
+                <View style={styles.action}>
+                        <Feather
+                            name="lock"
+                            color="#05375a"
+                            size={20}
+                        />
+                        <TextInput
+                            placeholder="Confirm Password"
+                            secureTextEntry={data.confirm_secureTextEntry ? true : false}
+                            style={styles.textInput}
+                            autoCapitalize="none"
+                            onChangeText={(val)=> handleConfirmPasswordChange(val)}
+                        />
+                        <TouchableOpacity
+                            onPress={updateconfirmSecureTextEntry}
+                        >
+                            {data.confirm_secureTextEntry ?
+                            <Feather
+                                name="eye-off"
+                                color="grey"
+                                size={20}
+                            />
+                            :
+                            <Feather
+                                name="eye"
+                                color="grey"
+                                size={20}
+                            />
+                        }
+                        </TouchableOpacity>
+                </View>
                 <View style={styles.button}>
                     <LinearGradient
                         colors={['#08d4c4', '#01ab9d']}
@@ -141,10 +193,10 @@ const SignIn = ({navigation}) => {
                     >
                         <Text style={[styles.textSign, {
                             color:'#fff'
-                        }]}>Sign In</Text>
+                        }]}>Sign Up</Text>
                     </LinearGradient>
                     <TouchableOpacity
-                        onPress={()=> navigation.navigate('SignUp')}
+                        onPress={()=> navigation.navigate('SignIn')}
                         style={[styles.signIn, {
                             borderColor: "#009387",
                             borderWidth: 1,
@@ -154,7 +206,7 @@ const SignIn = ({navigation}) => {
 
                     <Text style={[styles.textSign, {
                         color: '#009387'
-                    }]}>Sign Up</Text>
+                    }]}>Sign In</Text>
                     </TouchableOpacity>
                 </View>
             </Animatable.View>
@@ -162,7 +214,7 @@ const SignIn = ({navigation}) => {
     );
 };
 
-export default SignIn;
+export default SignUp;
 
 const styles = StyleSheet.create({
     container: {
