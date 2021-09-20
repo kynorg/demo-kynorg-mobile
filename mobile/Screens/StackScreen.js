@@ -10,10 +10,11 @@ const Stack = createStackNavigator();
 const StackScreen = ({navigation}) => (
     <Stack.Navigator screenOptions={{
         headerStyle: {
-            backgroundColor: '#FE5900',
+            backgroundColor: '#FFF',
         }
     }}>
-        <Stack.Screen name="Welcome" component={Welcome} options={{title:''}}/>
+        <Stack.Screen name="Welcome" component={Welcome} />
+        {/* options={{title:''}}/> */}
         <Stack.Screen name="SignIn" component={SignIn}/>
         <Stack.Screen name="SignUp" component={SignUp}/>
     </Stack.Navigator>
