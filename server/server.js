@@ -1,14 +1,17 @@
-var express = require("express");
+const express = require("express");
+const morgan = require("morgan");
 
-var app = express();
+const app = express();
+
+app.use(morgan('combined'));
 
 app.get("/", function(req, res) {
   res.send("Hello KynOrg Mobile!");
 });
 
-var server = app.listen(3000, function() {
-  var host = server.address().address;
-  var port = server.address().port;
+const server = app.listen(3000, function() {
+  const host = server.address().address;
+  const port = server.address().port;
 
   console.log("kynorgmobile.com listening at http://%s:%s", host, port);
 });
