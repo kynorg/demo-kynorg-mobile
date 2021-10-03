@@ -4,9 +4,7 @@ const User = require('../models/User');
 
 router.get('/', async (req, res) => {
   try {
-    /* const response = await User.sync(); // To create the table if it does not exist
-        res.send("TABLE HAS BEEN CREATED"); */
-    const response = await User.findAll(); // show all data in the table
+    const response = await User.findAll();
     res.json(response);
   } catch (error) {
     console.error(error.message);

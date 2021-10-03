@@ -1,16 +1,8 @@
 const express = require('express');
 const morgan = require('morgan');
-// database connection
-/* const db =  require("./config/database"); */
 const app = express();
 
 app.use(morgan('combined'));
-// confirm database connection
-/* db.authenticate()
-    .then(()=> console.log("Database Connected"))
-    .catch((err) => console.error(`Error ${err}`));
-*/
-// users routes
 app.use('/users', require('./routes/User'));
 
 app.get('/', (req, res) => {
