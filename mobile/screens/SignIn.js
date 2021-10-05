@@ -1,11 +1,11 @@
 import React from 'react';
-import { 
-    View, 
-    Text, 
-    TouchableOpacity, 
+import {
+    View,
+    Text,
+    TouchableOpacity,
     TextInput,
     Platform,
-    StyleSheet ,
+    StyleSheet,
     StatusBar,
     Alert
 } from 'react-native';
@@ -13,31 +13,36 @@ import * as Animatable from 'react-native-animatable';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
+import axios from 'axios';
 
 import { useTheme } from 'react-native-paper';
 
 
-const SignIn = ({navigation}) => {
+const SignIn = ({ navigation }) => {
 
     const [data, setData] = React.useState({
         username: '',
         password: '',
         check_textInputChange: '',
+        usernameError: '',
+        passwordError: '',
         secureTextEntry: true
     })
 
     const textInputChange = (val) => {
-        if( val.length != 0 ) {
+        if (val.length != 0) {
             setData({
                 ...data,
-                email: val,
-                check_textInputChange: true
+                username: val,
+                check_textInputChange: true,
+                usernameError: ''
             });
         } else {
             setData({
                 ...data,
-                email: val,
-                check_textInputChange: false
+                username: val,
+                check_textInputChange: false,
+                usernameError: 'username is required'
             });
         }
     }
@@ -49,30 +54,52 @@ const SignIn = ({navigation}) => {
         });
     }
 
-    const updateSecureTextEntry = ()=> {
+    const updateSecureTextEntry = () => {
         setData({
             ...data,
             secureTextEntry: !data.secureTextEntry
         })
     }
+    const onSignIn = (username, password) => {
+        if (password === '') {
+            setData({ ...data, passwordError: 'password is required' })
+        } else {
+            setData({ ...data, passwordError: '' })
+        }
+        if (data.passwordError === '' && data.usernameError === '' && data.check_textInputChange) {
+
+            const body = { username, password };
+            axios.post('http://localhost:3000/users/signin', body)
+                .then(response => {
+                    if (response.status === 200) {
+                        response.data.message ? setData({ ...data, usernameError: response.data.message }) : navigation.navigate('Home', { id: response.data.id, username: response.data.username });
+                    }
+                }).catch(error => {
+                    const statusCode = error.response ? error.response.status : null;
+                    if (statusCode === 404) {
+                        setData({ ...data, usernameError: 'username does not exist' });
+                    }
+                });
+        }
+    };
     return (
         <View style={styles.container}>
-            <StatusBar backgroundColor='#009387' barStyle="light-content"/>
+            <StatusBar backgroundColor='#009387' barStyle="light-content" />
             <View style={styles.header}>
                 <Text style={styles.text_header}>Welcome!</Text>
                 <Text style={styles.text}>sign in to view products</Text>
             </View>
-            <Animatable.View 
+            <Animatable.View
                 style={styles.footer}
                 animation="fadeInUpBig"
             >
                 <Text style={styles.text_footer}>Username</Text>
                 <View style={styles.action}>
-                    <FontAwesome 
+                    <FontAwesome
                         name="user-o"
                         color="#05375a"
                         size={20}
-                    /> 
+                    />
                     <TextInput
                         placeholder="Your username"
                         style={styles.textInput}
@@ -80,18 +107,26 @@ const SignIn = ({navigation}) => {
                         onChangeText={(val) => textInputChange(val)}
                     />
                     {data.check_textInputChange ?
-                    <Animatable.View
-                        animation="bounceIn"
-                    >
-                        <Feather
-                        name="check-circle"
-                        color="green"
-                        size={20}
-                    />
-                    </Animatable.View>
-                    : null}
+                        <Animatable.View
+                            animation="bounceIn"
+                        >
+                            <Feather
+                                name="check-circle"
+                                color="green"
+                                size={20}
+                            />
+                        </Animatable.View>
+                        : <Animatable.View
+                            animation="bounceIn"
+                        >
+                            <Feather
+                                name="alert-triangle"
+                                color="red"
+                                size={20}
+                            />
+                        </Animatable.View>}
                 </View>
-
+                {data.usernameError !== '' ? <Text style={[styles.errorContainer, styles.errorMsg]}>{data.usernameError}</Text> : null}
                 <Text style={[styles.text_footer, {
                     marginTop: 35
                 }]}>Password</Text>
@@ -100,7 +135,7 @@ const SignIn = ({navigation}) => {
                         name="lock"
                         color="#05375a"
                         size={20}
-                    /> 
+                    />
                     <TextInput
                         placeholder="Password"
                         secureTextEntry={data.secureTextEntry ? true : false}
@@ -112,32 +147,38 @@ const SignIn = ({navigation}) => {
                         onPress={updateSecureTextEntry}
                     >
                         {data.secureTextEntry ?
-                        <Feather
-                            name="eye-off"
-                            color="grey"
-                            size={20}
-                        />
-                        :
-                        <Feather
-                            name="eye"
-                            color="grey"
-                            size={20}
-                        />
+                            <Feather
+                                name="eye-off"
+                                color="grey"
+                                size={20}
+                            />
+                            :
+                            <Feather
+                                name="eye"
+                                color="grey"
+                                size={20}
+                            />
                         }
-                        
+
                     </TouchableOpacity>
                 </View>
+                {data.passwordError !== '' ? <Text style={[styles.errorContainer, styles.errorMsg]}>{data.passwordError}</Text> : null}
                 <View style={styles.button}>
-                    <LinearGradient
-                        colors={['#08d4c4', '#01ab9d']}
-                        style={styles.signIn}
-                    >
-                        <Text style={[styles.textSign, {
-                            color:'#fff'
-                        }]}>Sign In</Text>
-                    </LinearGradient>
                     <TouchableOpacity
-                        onPress={()=> navigation.navigate('SignUp')}
+                        style={styles.touchIn}
+                        onPress={() => { onSignIn(data.username, data.password) }}
+                    >
+                        <LinearGradient
+                            colors={['#08d4c4', '#01ab9d']}
+                            style={styles.signIn}
+                        >
+                            <Text style={[styles.textSign, {
+                                color: '#fff'
+                            }]}>Sign In</Text>
+                        </LinearGradient>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('SignUp')}
                         style={[styles.signIn, {
                             borderColor: "#009387",
                             borderWidth: 1,
@@ -145,9 +186,9 @@ const SignIn = ({navigation}) => {
                         }]}
                     >
 
-                    <Text style={[styles.textSign, {
-                        color: '#009387'
-                    }]}>Sign Up</Text>
+                        <Text style={[styles.textSign, {
+                            color: '#009387'
+                        }]}>Sign Up</Text>
                     </TouchableOpacity>
                 </View>
             </Animatable.View>
@@ -159,8 +200,8 @@ export default SignIn;
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1, 
-      backgroundColor: '#009387'
+        flex: 1,
+        backgroundColor: '#009387'
     },
     header: {
         flex: 1,
@@ -177,8 +218,8 @@ const styles = StyleSheet.create({
         paddingVertical: 30
     },
     text: {
-      color: 'black',
-      marginTop:5
+        color: 'black',
+        marginTop: 5
     },
     text_header: {
         color: '#fff',
@@ -213,6 +254,11 @@ const styles = StyleSheet.create({
         color: '#FF0000',
         fontSize: 14,
     },
+    errorContainer: {
+        alignItems: 'stretch',
+        justifyContent: 'flex-start',
+        paddingVertical: 10
+    },
     button: {
         alignItems: 'center',
         marginTop: 50
@@ -224,8 +270,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 10
     },
+    touchIn: {
+        width: '100%',
+        maxHeight: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     textSign: {
         fontSize: 18,
         fontWeight: 'bold'
     }
-  });
+});
