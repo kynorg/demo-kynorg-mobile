@@ -11,7 +11,7 @@ const Drawer = createDrawerNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <StackScreen/>
+      <StackScreen />
     </NavigationContainer>
   );
 }
