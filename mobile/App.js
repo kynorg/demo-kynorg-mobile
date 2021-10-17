@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { NavigationContainer } from '@react-navigation/native';
 
-import StackScreen from './Screens/StackScreen';
+import StackScreen from './screens/StackScreen';
 
 const Drawer = createDrawerNavigator();
 

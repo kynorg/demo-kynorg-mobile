@@ -23,7 +23,7 @@ const Welcome = ({navigation}) => {
             <Animatable.Image 
                 animation="bounceIn"
                 duraton="1500"
-            source={require('../Image/KynOrg-logo2.png')}
+            source={require('../image/KynOrg-logo2.png')}
             style={styles.logo}
             resizeMode="stretch"
             />
