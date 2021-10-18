@@ -99,7 +99,14 @@ const SignUp = ({ navigation }) => {
             const body = { username, password };
             axios.post('http://localhost:3000/users/signup', body)
                 .then(response => {
-                    response.data.message ? setData({ ...data, usernameError: response.data.message }) : navigation.navigate('Home', { id: response.data.id, username: response.data.username });
+                    response.data.message ? setData({ ...data, usernameError: response.data.message }) : null;
+                    let type = response.data.type;
+                    if(type === 'client')
+                    {
+                        navigation.navigate('Home', { id: response.data.id, username: response.data.username });
+                    }else{
+                        navigation.navigate('Admin', { id: response.data.id, username: response.data.username });
+                    }
                 }).catch(error => {
                     throw error;
                     console.log(error);

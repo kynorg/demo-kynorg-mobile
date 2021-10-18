@@ -17,6 +17,11 @@ const User = db.define('users', {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  accountType: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    defaultValue: 'client',
+  }
 });
 
 module.exports = User;

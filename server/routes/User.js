@@ -17,17 +17,18 @@ router.get('/', async (req, res) => {
 
 router.post('/signup', async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, password, type } = req.body;// remove type if creating a client account
     bcrypt.hash(password, saltRounds, async (err, hash) => {
       const [user, created] = await User.findOrCreate({
         where: { username: username },
         defaults: {
           username: username,
           password: hash,
+          accountType: type,// remove if creating a client account
         },
       });
       created
-        ? res.send({ username: user.username, id: user.id })
+        ? res.send({ username: user.username, id: user.id, type: user.accountType })
         : res.send({ message: 'Username Already Taken' });
     });
   } catch (err) {
@@ -40,13 +41,13 @@ router.post('/signin', async (req, res) => {
     const { username, password } = req.body;
     const user = await User.findOne({
       where: { username: username },
-      attributes: ['username', 'password'],
+      attributes: ['username', 'password', 'accountType'],
     });
     if (user) {
       const match = await bcrypt.compare(password, user.password);
 
       if (match) {
-        res.status(200).send({ username: user.username, id: user.id });
+        res.status(200).send({ username: user.username, id: user.id, type: user.accountType });
       } else {
         res.send({ message: 'Incorrect Password' });
       }
