@@ -5,6 +5,7 @@ import Welcome from './Welcome';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import HomeScreen from './HomeScreen';
+import AdminScreen from './AdminScreen';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,7 @@ const StackScreen = ({ navigation }) => (
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Admin" component={AdminScreen} />
     </Stack.Navigator>
 );
 
