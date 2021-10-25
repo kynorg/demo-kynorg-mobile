@@ -1,27 +1,30 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
 
-const User = db.define('users', {
+const Product = db.define('products', {
   id: {
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,
     allowNull: false,
     primaryKey: true,
   },
-  username: {
+  productName: {
     type: Sequelize.STRING,
-    allowNull: false,
     unique: true,
+    allowNull: false,
   },
-  password: {
+  price: {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  accountType: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    defaultValue: 'client',
+  description: {
+    type: Sequelize.TEXT,
+    allowNull: true,
+  },
+  image: {
+    type: Sequelize.TEXT,
+    allowNull: true,
   },
 });
 
-module.exports = User;
+module.exports = Product;
