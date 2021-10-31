@@ -39,7 +39,7 @@ router.get('/', async (req, res) => {
   res.send(response);
 });
 
-router.post('/upload', upload.single('image'), async (req, res, next) => {
+router.post('/upload', upload.single('image'), async (req, res) => {
   try {
     // console.log(req.file); // Here you will get the file
     const { name, price, description } = req.body;
