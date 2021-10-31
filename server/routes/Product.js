@@ -48,7 +48,7 @@ router.post('/upload', upload.single('image'), async (req, res) => {
       productName: name,
       price: price,
       description: description,
-      image: filename,
+      image: `http://localhost:3000/static/${filename}`,
     });
     return res.status(200).send(`${product.productName} has been added`);
   } catch (error) {

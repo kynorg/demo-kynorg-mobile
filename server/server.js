@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
@@ -5,6 +6,8 @@ const cors = require('cors');
 const app = express();
 const Product = require('./routes/Product');
 const User = require('./routes/User');
+
+app.use('/static', express.static(path.resolve(__dirname, 'public')));
 app.use(cors());
 app.use(morgan('combined'));
 app.use(express.json());

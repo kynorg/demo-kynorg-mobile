@@ -96,7 +96,7 @@ const SignUp = ({ navigation }) => {
         if (data.passwordError === '' && data.usernameError === '' && data.check_textInputChange) {
 
             const body = { username, password };
-            axios.post('http://localhost/users/signup', body)
+            axios.post('http://localhost:3000/users/signup', body)
                 .then(response => {
                     response.data.message ? setData({ ...data, usernameError: response.data.message }) : null;
                     let type = response.data.type;
