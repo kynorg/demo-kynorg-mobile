@@ -73,11 +73,10 @@ const SignIn = ({ navigation }) => {
                     if (response.status === 200) {
                         response.data.message ? setData({ ...data, usernameError: response.data.message }) : null;
                         let type = response.data.type;
-                        if(type === 'client')
-                        {
-                            navigation.navigate('Home', { id: response.data.id, username: response.data.username });
-                        }else{
-                            navigation.navigate('Admin', { id: response.data.id, username: response.data.username });
+                        if (type === 'client') {
+                            navigation.navigate('Home', { screen: 'Home', params: { id: response.data.id, username: response.data.username } });
+                        } else {
+                            navigation.navigate('Dashboard', { screen: 'Dashboard', params: { id: response.data.id, username: response.data.username } });
                         }
                     }
                 }).catch(error => {
