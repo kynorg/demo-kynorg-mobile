@@ -12,7 +12,7 @@ app.use(cors());
 app.use(morgan('combined'));
 app.use(express.json());
 app.use('/users', User);
-app.use('/Products', Product);
+app.use('/products', Product);
 
 app.get('/', (req, res) => {
   res.send('Hello KynOrg Mobile!');
