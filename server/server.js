@@ -6,6 +6,7 @@ const cors = require('cors');
 const app = express();
 const Product = require('./routes/Product');
 const User = require('./routes/User');
+const Favorite = require('./routes/Favorite')
 
 app.use('/static', express.static(path.resolve(__dirname, 'public')));
 app.use(cors());
@@ -13,6 +14,7 @@ app.use(morgan('combined'));
 app.use(express.json());
 app.use('/users', User);
 app.use('/products', Product);
+app.use('/favorites', Favorite)
 
 app.get('/', (req, res) => {
   res.send('Hello KynOrg Mobile!');
